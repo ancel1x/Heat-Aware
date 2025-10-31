@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SafeTemp Lab</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script src="app.js" defer> </script>
+</head>
+<body>
+  <!-- flowing background + grain -->
+  <div class="flow-bg" aria-hidden="true"></div>
+  <div class="moving-bg" id="movingBg" aria-hidden="true"></div>
+  <div class="cursor-gradient" id="cursorGradient" aria-hidden="true"></div>
+  <div class="grain" aria-hidden="true"></div>
+
+  <!-- Top Nav -->
+  <nav class="topnav">
+    <div class="container nav-inner">
+      <div class="brand">
+        <img src="images/logo-mark.svg" alt="SafeTemp Lab" class="brand-mark">
+        <div class="brand-name">SafeTemp Lab</div>
+      </div>
+      <div class="links">
+        <a href="#/" class="navbarlinks">Home</a>
+       <!--<a href="#/login">Login</a>-->
+        <a href="#map" class="navbarlinks">Graph</a>
+      </div>
+      <a class="btn ghost" href="#/login">Get started</a>
+    </div>
+  </nav>
+
+  <!-- LANDING -->
+  <main data-route="#/" class="route">
+    <header class="hero" id="hero">
+      <svg width="0" height="0" class="absolute">
+        <filter id="heat-shimmer">
+          <feTurbulence type="fractalNoise" baseFrequency="0.05" numOctaves="2" seed="2">
+            <animate attributeName="baseFrequency" dur="10s" values="0.006;0.012;0.006" repeatCount="indefinite"/>
+          </feTurbulence>
+          <feDisplacementMap in="SourceGraphic" scale="6"/>
+        </filter>
+      </svg>
+
+      <div class="container">
+        <div class="blob a" data-speed="-0.05"></div>
+        <div class="blob b" data-speed="0.08"></div>
+
+        <h1 class="title logo-text" style="filter:url(#heat-shimmer)">Heat awareness that feels live.</h1>
+        <p class="sub">
+          Live temperature, live video, and smart alerts—starting with Raspberry Pi.
+        </p>
+        <div class="cta">
+          <a class="btn" href="#/login">Get started</a>
+          <a class="btn ghost2" href="#map">Explore graph</a>
+        </div>
+
+        <div class="features" id="heroFeatures">
+          <div class="card">
+            <div class="card-title">Right-now feed</div>
+            <div class="card-desc">Stay informed with live, continuously updated readings of your car’s internal temperature. The feed refreshes in real time, instantly alerting you when heat levels begin to rise so you can act before it becomes unsafe.</div>
+          </div>
+          <div class="card">
+            <div class="card-title">Temperature monitoring</div>
+            <div class="card-desc">Accurately track and visualize your car’s internal temperature in Fahrenheit. The system monitors fluctuations, highlights danger zones, and provides clear insights to help you maintain a safe environment inside the vehicle.</div>
+          </div>
+          <div class="card">
+            <div class="card-title">Instant communication</div>
+            <div class="card-desc">When critical heat levels are detected, automatic alerts are sent through phone calls or messages to your selected contacts. This rapid response ensures immediate awareness and quick action to prevent heat-related risks.</div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <section id="map" class="section">
+      <div class="container">
+        <p class="eyebrow">Real time Temp</p>
+        <div class="grid-3">
+          
+          <p id="data" style="font-size: 60;"> 
+
+          </p>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <img src="images/logo-text.svg" alt="SafeTemp Lab" class="logo-text-img">
+      <p class="muted small">© <span id="year"></span> SafeTemp Lab</p>
+    </footer>
+  </main>
+
+  <!-- LOGIN -->
+  <main data-route="#/login" class="route hidden">
+    <div class="logincard">
+      <form class="card form" id="loginForm">
+        <div class="welcomeback">Welcome back</div>
+        <p class="viewdashboard">Sign in to view your dashboard.</p>
+        <label class="label">Email</label>
+        <input class="input" type="email" id="email" placeholder="you@example.com" required>
+        <label class="label">Password</label>
+        <input class="input" type="password" id="password" placeholder="••••••••" required>
+        <button class="loginbtn" type="submit">Log In</button>
+        <p class="muted xsmall">No account? <a href="#/">Sign up</a></p>
+      </form>
+    </div>
+  </main>
+
+  <!-- DASHBOARD -->
+  <main data-route="#/dashboard" class="route hidden">
+    <div class="dash-wrap">
+      <aside class="sidebar card">
+        <div class="brand">
+          <img src="images/logo-mark.svg" class="brand-mark" alt="SafeTemp Lab">
+          <div class="brand-name">SafeTemp Lab</div>
+        </div>
+        <nav class="side-links">
+          <a class="active">Overview</a>
+          <a>Devices</a>
+          <a>Alerts</a>
+          <a>Settings</a>
+        </nav>
+      </aside>
+      <section class="dash-main">
+        <div class="topbar card">
+          <div class="h3">Dashboard</div>
+        </div>
+
+        <div class="dash-grid">
+          <div class="card">
+            <div class="card-title-row">
+              <div class="card-title">Temperature</div>
+              <div class="muted xsmall">last ~1 min</div>
+            </div>
+            <div class="temp-row">
+              <div id="tempValue" class="temp-value">--°C</div>
+              <div class="muted small">Heat Index sim.</div>
+            </div>
+            <svg id="spark" width="200" height="60" viewBox="0 0 200 60"></svg>
+            <div class="legend-dots mt8">
+              <div><i class="dot safe"></i>Safe</div>
+              <div><i class="dot caution"></i>Caution</div>
+              <div><i class="dot danger"></i>Danger</div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-title">Live Video Feed</div>
+            <div class="muted small">Use webcam now; later paste your Pi stream URL.</div>
+            <div class="video-wrap">
+              <video id="video" playsinline controls></video>
+            </div>
+            <div class="row gap">
+              <button id="startCam" class="btn">Start Camera</button>
+              <button id="stopCam" class="btn ghost">Stop</button>
+            </div>
+            <div class="muted xsmall">or stream URL (MP4/HLS if supported):</div>
+            <div class="row gap">
+              <input class="input" id="streamUrl" placeholder="https://example.com/stream.m3u8">
+              <button id="loadUrl" class="btn">Load</button>
+            </div>
+            <div id="vidError" class="error"></div>
+          </div>
+
+          <div class="card">
+            <div class="card-title">Events</div>
+            <ul id="events" class="events"></ul>
+          </div>
+
+          <div class="card">
+            <div class="card-title">Device</div>
+            <div class="muted small">Raspberry Pi 4 • Camera v3</div>
+            <div class="mt8 muted small">
+              <div>Location: Demo car</div>
+              <div>Status: Online</div>
+              <div>Stream: (use webcam or paste URL)</div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <script src="./app.js"></script>
+  <script>
+    // Cursor-following gradient effect
+    document.addEventListener('DOMContentLoaded', function() {
+      const cursorGradient = document.getElementById('cursorGradient');
+      const movingBg = document.getElementById('movingBg');
+      let mouseX = 0;
+      let mouseY = 0;
+      let isMoving = false;
+
+      // Track mouse movement
+      document.addEventListener('mousemove', function(e) {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+        
+        if (!isMoving) {
+          isMoving = true;
+          cursorGradient.classList.add('active');
+        }
+
+        // Update cursor gradient position
+        const xPercent = (mouseX / window.innerWidth) * 100;
+        const yPercent = (mouseY / window.innerHeight) * 100;
+        
+        cursorGradient.style.background = `
+          radial-gradient(circle at ${xPercent}% ${yPercent}%, rgba(255,159,54,0.04) 0%, transparent 40%),
+          radial-gradient(circle at ${(xPercent + 15) % 100}% ${(yPercent + 8) % 100}%, rgba(255,95,109,0.03) 0%, transparent 40%),
+          radial-gradient(circle at ${(xPercent - 10) % 100}% ${(yPercent - 12) % 100}%, rgba(255,211,106,0.035) 0%, transparent 40%)
+        `;
+
+        // Update moving background gradient based on cursor position
+        const bgX = (mouseX / window.innerWidth) * 20 - 10; // -10 to +10 range
+        const bgY = (mouseY / window.innerHeight) * 20 - 10; // -10 to +10 range
+        
+        movingBg.style.background = `
+          linear-gradient(${45 + bgX}deg, var(--bg-1) 0%, rgba(26, 24, 48, 0.95) 50%, var(--bg-2) 100%),
+          linear-gradient(${135 + bgY}deg, rgba(255,159,54,0.02) 0%, transparent 50%, rgba(255,95,109,0.015) 100%)
+        `;
+      });
+
+      // Hide gradient when mouse stops moving
+      let mouseTimeout;
+      document.addEventListener('mousemove', function() {
+        clearTimeout(mouseTimeout);
+        mouseTimeout = setTimeout(function() {
+          isMoving = false;
+          cursorGradient.classList.remove('active');
+        }, 1000);
+      });
+
+      // Hide gradient when mouse leaves window
+      document.addEventListener('mouseleave', function() {
+        isMoving = false;
+        cursorGradient.classList.remove('active');
+      });
+
+      // Show gradient when mouse enters window
+      document.addEventListener('mouseenter', function() {
+        if (mouseX > 0 && mouseY > 0) {
+          isMoving = true;
+          cursorGradient.classList.add('active');
+        }
+      });
+    });
+  </script>
+</body>
+</html>
